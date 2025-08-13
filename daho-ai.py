@@ -62,10 +62,27 @@ async def echo(message: types.Message):
     except requests.RequestException:
         await message.answer("API bilan bog‘lanishda xatolik yuz berdi!")
 
+from flask import Flask
+from threading import Thread
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is alive!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 async def main():
+    keep_alive()
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
+    print("Bot ishga tushdi...✅")
     asyncio.run(main())
